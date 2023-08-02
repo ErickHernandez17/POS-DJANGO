@@ -1,0 +1,40 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}PRODUCTOS{% endblock %}
+{% block content %}
+<div class="container">
+  <div style="padding-top:50px; text-align:center;">
+    
+  </div>
+</div>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endfor %}
+{% endif %}
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-sm-6 border p-4">
+      <h1 class='text-center'>Crear producto</h1>
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}  {# Renderiza el formulario #}
+        <div class="d-grid gap-2 ">
+          <input class="btn btn-primary btn-outline-success col-sm-12" type="submit" value="Agregar">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+{% endblock %}
