@@ -1,0 +1,28 @@
+/* Ajusta el estilo de la lista de categorías */
+.generic-list {
+    max-height: 300px; /* Define la altura máxima para la lista con scrollbar */
+    overflow-y: auto; /* Agrega el scrollbar vertical cuando se supera la altura máxima */
+}
+
+/* Estilo de los elementos de la lista */
+.generic-item {
+    text-align: center; /* Centra el contenido */
+    border-top: 1px solid #e9ecef; /* Agrega un separador entre elementos */
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
+    transition: background-color 0.3s; /* Agrega transición al cambio de color de fondo */
+}
+
+/* Cambia el fondo al pasar el mouse */
+.generic-item:hover {
+    background-color: rgba(0, 0, 0, 0.05); /* Cambia a un tono más opaco */
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f5f5f5;
+  }
+
+  /* Scrollbar personalizado */
+  .table-responsive-custom {
+    max-height: 400px;
+    overflow-y: auto;
+  }

@@ -18,14 +18,29 @@
             <input type="text" name="username" autofocus maxlength="254" required
               id="id_username" class="form-control" placeholder="Nombre de usuario"/>
           </p>
-          <p>
-            <input type="password" name="password" required
-              id="id_password" class="form-control" placeholder="Contraseña"/>
-          </p>
+          
+          <div class="input-group">
+            <input type="password" name="password" required="" id="id_password" class="form-control" placeholder="Contraseña">
+            <button class="btn btn-outline-secondary toggle-password" type="button">
+              <i class="fa fa-eye"></i>
+            </button>
+          </div>
           <p><input type="submit" class="btn btn-primary btn-block" value="Acceder"></p>
+
         </form>
       </div>
     </div>
   </div>
 </main>
+<script>
+  // Toggle password visibility
+  document.querySelector('.toggle-password').addEventListener('click', function () {
+    var passwordField = document.querySelector('#id_password');
+    if (passwordField.type === 'password') {
+      passwordField.type = 'text';
+    } else {
+      passwordField.type = 'password';
+    }
+  });
+</script>
 {% endblock %}

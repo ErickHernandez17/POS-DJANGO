@@ -1,6 +1,10 @@
 {% extends 'core/base.html' %}
 {% load static %}
-{% block title %}INVENTARIOS{% endblock %}
+{% block title %}CATEGORIAS{% endblock %}
+{% block styles %}
+    <link href="{% static 'core/css/lists.css' %}" rel="stylesheet">
+{% endblock styles %}
+
 {% block content %}
 <div class="container">
   <div style="padding-top:50px; text-align:center;">
@@ -22,15 +26,20 @@
 <div class="container mt-5">
   <div class="row justify-content-center">
     <div class="col-sm-6 border p-4">
-      <h1 class='text-center'>Crear Inventario</h1>
-      <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}  {# Renderiza el formulario #}
-        <div class="d-grid gap-2 ">
-          <input class="btn btn-primary btn-outline-success col-sm-12" type="submit" value="Agregar">
+      <h1 class="text-center">Categorias</h1>
+      <form method="GET" action="{% url 'list_category' %}">
+        <div class="input-group">
+          <input type="text" name="q" class="form-control" placeholder="Buscar inventario">
+          <button type="submit" class="btn btn-primary">Buscar</button>
         </div>
       </form>
+
+      <ul class="list-group mt-3 table-responsive-custom" id="category_list" data-url="{% url 'list_category' %}">
+      </ul>
     </div>
   </div>
 </div>
+
+<script src="{% static 'js/list.js' %}"></script>
+
 {% endblock %}
