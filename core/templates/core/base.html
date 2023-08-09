@@ -38,7 +38,7 @@
                   <a class="nav-link" href="{% url 'existens' %}">Existencias</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Ventas</a>
+                  <a class="nav-link" href="{% url 'create-ticket' %}">Ventas</a>
                 </li>
               {% endif %}
 
@@ -52,9 +52,6 @@
                   <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="{% url 'list_category' %}">Ver</a></li>
                     <li><a class="dropdown-item" href="{% url 'create_category' %}">Crear</a></li>
-                    <li><a class="dropdown-item" href="#">Editar</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Eliminar</a></li>
                   </ul>
                 </li>
 
@@ -65,9 +62,7 @@
                     <ul class="dropdown-menu">
                       <li><a class="dropdown-item" href="{% url 'list_product' %}">Ver</a></li>
                       <li><a class="dropdown-item" href="{% url 'create_product' %}">Crear</a></li>
-                      <li><a class="dropdown-item" href="#">Editar</a></li>
-                      <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="#">Eliminar</a></li>
+
                     </ul>
                 </li>
 
@@ -78,9 +73,7 @@
                   <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="{% url 'list_inventory' %}">Ver</a></li>
                     <li><a class="dropdown-item" href="{% url 'create_inventory' %}">Crear</a></li>
-                    <li><a class="dropdown-item" href="#">Editar</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Eliminar</a></li>
+
                   </ul>
                 </li>
 
@@ -91,9 +84,7 @@
                   <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="{% url 'list_category' %}">Ver</a></li>
                     <li><a class="dropdown-item" href="{% url 'create_user' %}">Crear</a></li>
-                    <li><a class="dropdown-item" href="#">Editar</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Eliminar</a></li>
+
                   </ul>
                 </li>
 
@@ -104,13 +95,9 @@
                   <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="{% url 'list_category' %}">Ver</a></li>
                     <li><a class="dropdown-item" href="{% url 'create_country' %}">Crear Pais</a></li>
-                    <li><a class="dropdown-item" href="#">Editar</a></li>
-                    <li><a class="dropdown-item" href="#">Eliminar</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="{% url 'list_category' %}">Ver</a></li>
                     <li><a class="dropdown-item" href="{% url 'create_city' %}">Crear Ciudad</a></li>
-                    <li><a class="dropdown-item" href="#">Editar</a></li>
-                    <li><a class="dropdown-item" href="#">Eliminar</a></li>
                   </ul>
                 </li>
 

@@ -1,0 +1,129 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}TICKETS{% endblock title %}
+{% block content %}
+
+
+
+<div class="container">
+    <div class="row">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="col-md-6">
+            <h1>Elementos Agregados</h1>
+            <table id="elementos-tabla" class="col-12">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </table>
+        </div>
+
+
+
+        <div class="col-md-6">
+            <h1>Agregar Elemento</h1>
+            <form id="agregar-form" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+
+                <button type="submit" id="agregar" class="btn btn-primary col-12">Agregar</button>
+
+            </form>
+            <br>
+            <button id="agregar-todos" class="btn btn-primary col-12">Cerrar ticket</button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    const items = []; // Objeto JavaScript para almacenar los elementos
+
+    document.getElementById('agregar-form').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const selectElement = document.querySelector('#id_product');
+        const id_producto = selectElement.value;
+        const producto = selectElement.options[selectElement.selectedIndex].textContent;
+        const cantidad = document.querySelector('#id_quantity').value;
+
+        fetch(`/product/get-price/${id_producto}/`)
+            .then(response => response.json())
+            .then(data => {
+                const price = data.price;
+                items.push({ id_producto, producto, cantidad, price });
+                updateTabla();
+            });
+    });
+
+    function updateTabla() {
+        const tablaBody = document.querySelector('#elementos-tabla tbody');
+        tablaBody.innerHTML = '';
+        items.forEach(item => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${item.producto}</td>
+                <td>${item.cantidad}</td>
+                <td>${item.price}</td>
+                <td>${(item.cantidad * item.price)}</td>
+            `;
+            tablaBody.appendChild(row);
+        });
+    }
+
+    document.getElementById('agregar-todos').addEventListener('click', function () {
+        // Obtener el ID del usuario logeado
+        const userId = {{ request.user.id }};
+        
+        // Crear el Ticket y obtener el ticket_id
+        fetch('/tickets/get-ticket-id/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({ user_id: userId })
+        }).then(response => response.json()).then(data => {
+            const ticketId = data.ticket_id;
+    
+            // Agregar ticket_id a cada elemento
+            items.forEach(item => {
+                item.ticket_id = ticketId;
+            });
+    
+            // Ahora enviar la lista de elementos a la vista create_ticket
+            fetch('/tickets/create/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ items: items })
+            }).then(response => response.json()).then(data => {
+                console.log(`Elementos agregados al ticket con ID: ${ticketId}`);
+                // Resto del código, si es necesario
+            });
+        });
+    });
+</script>
+
+{% endblock content %}
+
+
+

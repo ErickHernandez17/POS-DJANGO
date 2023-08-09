@@ -93,3 +93,13 @@ def delete_product(request, product_id):
         data = {"message": "error"}
     
     return JsonResponse(data)
+
+
+def get_price(request, id_product):
+    try:
+        product = Products.objects.get(pk=id_product)
+        price = product.price
+        print(price)
+        return JsonResponse({'price':price})
+    except Products.DoesNotExist:
+        return JsonResponse({'error':'The product doesn\'t exist'}, status=404)

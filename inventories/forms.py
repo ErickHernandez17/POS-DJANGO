@@ -18,3 +18,6 @@ class InvetoriesForm(forms.ModelForm):
         labels = {
             'state':'Estado'
         }
+        
+        
+        
