@@ -49,7 +49,7 @@ class InventoryUpdateView(UpdateView):
     def form_valid(self, form):
         response = super().form_valid(form)
         if self.request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
-            inventories = list(Inventories.objects.select_related('product').filter(status=True).values('id','product__product', 'product__price', 'quantity','create_date'))
+            inventories = list(Inventories.objects.select_related('product').filter(state=True).values('id','product__product', 'product__price', 'quantity','create_date'))
             if len(inventories) > 0:
                 data = {"message": "success", 'inventories': inventories}
             else:

@@ -25,11 +25,3 @@ window.addEventListener("load", async () => {
 
 
 
-/* const getOptionsChart=async()=>{
-    try{
-        const response = await fetch("/reports/api/");
-        return await response.json();
-    }catch (ex){
-        alert(ex)
-    }
-} */
