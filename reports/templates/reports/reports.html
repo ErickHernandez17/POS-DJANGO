@@ -2,20 +2,21 @@
 {% block title %}REEPORTES{% endblock title %}
 {% load static %}
 {% block styles %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
-<script src="{% static 'js/main.js' %}"></script>
-<!-- <link rel="stylesheet" href="{% static 'css/style.css' %}"> --> 
+
+<link rel="stylesheet" href="{% static 'css/style.css' %}">  
 {% endblock styles %}
 
 {% block content %}
 
 <div class="container">
-
     <div class="row my-4">
         <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 mx-auto">
-            <div class="chart" id="chart" ></div>
+            <div id="chart" class="chart"></div>
         </div>
     </div>
-
 </div>
+<!-- Apache ECharts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.1/echarts.min.js"></script>
+<!-- Custom JS -->
+<script src="{% static 'js/main.js' %}"></script>
 {% endblock content %}

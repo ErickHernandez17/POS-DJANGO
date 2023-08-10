@@ -4,6 +4,7 @@ from tickets.models import Items
 from products.models import Products
 from django.db.models import Count
 from django.db.models import F
+from random import randrange
 # Create your views here.
 
 def reports_index(request):
@@ -11,6 +12,8 @@ def reports_index(request):
     
     
 def get_chart(request):
+    colors = ['blue', 'orange', 'red', 'black', 'yellow', 'green', 'magenta', 'lightblue', 'purple', 'brown']
+    random_color = colors[randrange(0, (len(colors)-1))]
     items_grouped_by_product = Items.objects.values('product').annotate(item_count=Count('id'))
     product_ids = [product['product'] for product in items_grouped_by_product]
 
@@ -26,6 +29,11 @@ def get_chart(request):
 
     
     chart = {
+        'tooltip': {
+            'show': True,
+            'trigger': "axis",
+            'triggerOn': "mousemove|click"
+        },
         'xAxis': {
             'type': 'category',  # Corregir "category" aquí
             'data': product_names_list
@@ -36,9 +44,9 @@ def get_chart(request):
         'series': [
             {
                 'data': item_count_list,
-                'type': 'line'
+                'type': 'bar'
             }
         ]
     }
-
+    print(chart)
     return JsonResponse(chart)

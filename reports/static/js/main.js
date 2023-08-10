@@ -1,4 +1,29 @@
-import * as echarts from 'echarts';
+const getOptionChart = async () => {
+  try {
+      const response = await fetch("http://127.0.0.1:8000/reports/get_chart/");
+      return await response.json();
+  } catch (ex) {
+      alert(ex);
+  }
+};
+
+const initChart = async () => {
+  const myChart = echarts.init(document.getElementById("chart"));
+
+  myChart.setOption(await getOptionChart());
+
+  myChart.resize();
+};
+
+window.addEventListener("load", async () => {
+  await initChart();
+  setInterval(async () => {
+      await initChart();
+  }, 2000);
+});
+
+
+
 
 /* const getOptionsChart=async()=>{
     try{
@@ -8,47 +33,3 @@ import * as echarts from 'echarts';
         alert(ex)
     }
 } */
-
-const getOptionsChart=()=>{
-    return {
-        xAxis: {
-          type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-        },
-        yAxis: {
-          type: 'value'
-        },
-        series: [
-          {
-            data: [
-              120,
-              {
-                value: 200,
-                itemStyle: {
-                  color: '#a90000'
-                }
-              },
-              150,
-              80,
-              70,
-              110,
-              130
-            ],
-            type: 'bar'
-          }
-        ]
-      };
-}
-
-
-const initChart=()=>{
-    var chartDOM = document.getElementById('chart')
-    var mychart = echarts.init(chartDOM);
-    var option = getOptionsChart();
-    option && mychart.setOption(option);
-   
-};
-
-window.addEventListener("load", () => {
-    initChart();
-});
