@@ -7,17 +7,10 @@
 
 <div class="container">
     <div class="row">
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            {% endfor %}
-        {% endif %}
+        
+        
 
+            
         <div class="col-md-6">
             <h1>Elementos Agregados</h1>
             <table id="elementos-tabla" class="col-12">
@@ -49,39 +42,75 @@
             <br>
             <button id="agregar-todos" class="btn btn-primary col-12">Cerrar ticket</button>
         </div>
-
     </div>
+
+
+    <div class="row">
+        <div class='col-md-12'>
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+    </div></div>
+
 </div>
 
 <script>
+
+    const successMessage = localStorage.getItem('successMessage');
+
+    // Mostrar el mensaje de éxito si está presente
+    if (successMessage) {
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'alert alert-success alert-dismissible fade show';
+        alertDiv.role = 'alert';
+        alertDiv.innerHTML = `
+            ${successMessage}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        `;
+        document.querySelector('.container').prepend(alertDiv);
+
+        // Limpiar el mensaje de éxito guardado en el almacenamiento local
+        localStorage.removeItem('successMessage');
+    }
+
+
     const items = []; // Objeto JavaScript para almacenar los elementos
 
     document.getElementById('agregar-form').addEventListener('submit', function (event) {
         event.preventDefault();
         const selectElement = document.querySelector('#id_product');
-        const id_producto = selectElement.value;
-        const producto = selectElement.options[selectElement.selectedIndex].textContent;
-        const cantidad = document.querySelector('#id_quantity').value;
+        const product = selectElement.value;
+        const nombre_producto = selectElement.options[selectElement.selectedIndex].textContent;
+        const quantity = document.querySelector('#id_quantity').value;
 
-        fetch(`/product/get-price/${id_producto}/`)
+        fetch(`/product/get-price/${product}/`)
             .then(response => response.json())
             .then(data => {
                 const price = data.price;
-                items.push({ id_producto, producto, cantidad, price });
-                updateTabla();
+                items.push({ product, quantity, price });
+                updateTabla(nombre_producto);
             });
     });
 
-    function updateTabla() {
+    function updateTabla(name) {
         const tablaBody = document.querySelector('#elementos-tabla tbody');
         tablaBody.innerHTML = '';
         items.forEach(item => {
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${item.producto}</td>
-                <td>${item.cantidad}</td>
+                <td>${name}</td>
+                <td>${item.quantity}</td>
                 <td>${item.price}</td>
-                <td>${(item.cantidad * item.price)}</td>
+                <td>${(item.quantity * item.price)}</td>
             `;
             tablaBody.appendChild(row);
         });
@@ -115,12 +144,15 @@
                     'X-CSRFToken': '{{ csrf_token }}'
                 },
                 body: JSON.stringify({ items: items })
-            }).then(response => response.json()).then(data => {
-                console.log(`Elementos agregados al ticket con ID: ${ticketId}`);
-                // Resto del código, si es necesario
+            }).then(() => {
+                // Redireccionar a la página de creación de ticket
+                localStorage.setItem('successMessage', 'Productos agregados exitosamente');
+                window.location.href = '{{ success_url }}';
             });
         });
     });
+    
+    
 </script>
 
 {% endblock content %}
