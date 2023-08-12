@@ -6,37 +6,10 @@ from django.views.generic import View
 from django.http import JsonResponse
 from products.models import Products
 from django.urls import reverse, reverse_lazy
-from django.http import HttpResponse
 from django.contrib import messages
 import json
 
-""" def create_ticket(request):
-    if request.method == 'POST':
-        items_data = json.loads(request.body).get('items')
-        if items_data:
-            
-            for item_data in items_data:
-                print(item_data['product'])
-                try:
-                    ticket = Ticket.objects.get(pk=item_data['ticket_id'])
-                    product = Products.objects.get(pk=item_data['product'])
-                    item = Items(price=item_data['price'], quantity=item_data['quantity'])
-                    item.ticket = ticket
-                    item.product = product
-                    item.save()
-                    print('Item agregado exitosamente')
-                except Exception as e:
-                    messages.error(request, 'error al agregar los productos al ticket')
-                    return redirect(reverse('create-ticket'))
-     
-            messages.success(request, 'Producto creado exitosamente.')
-            return HttpResponse(reverse('create-ticket'))
-        else:
-            return JsonResponse({'error': 'No se proporcionaron elementos'}, status=400)
-    else:
-        products_available = Products.objects.filter(state=True)
-        form = ItemForm(initial={'product': products_available})
-    return render(request, 'tickets/create_ticket.html', {'form': form}) """
+
 
 class CreateTicketView(View):
     template_name = 'tickets/create_ticket.html'

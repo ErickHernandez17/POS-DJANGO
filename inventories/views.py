@@ -35,8 +35,8 @@ class InventoriesListView(ListView):
     def get_queryset(self):
         query = self.request.GET.get('q')  # Obtiene el valor de la barra de búsqueda
         if query:
-            return Inventories.objects.filter(inventory__icontains=query)
-        return Inventories.objects.all()
+            return Inventories.objects.filter(inventory__icontains=query, state=True)
+        return Inventories.objects.filter(state=True).all()
     
     
 class InventoryUpdateView(UpdateView):
@@ -61,7 +61,7 @@ class InventoryUpdateView(UpdateView):
     
     
 def get_inventories(_request):
-    inventories = list(Inventories.objects.select_related('product').filter(status=True).values('id','product__product', 'product__price', 'quantity','create_date'))
+    inventories = list(Inventories.objects.select_related('product').filter(state=True).values('id','product__product', 'product__price', 'quantity','create_date'))
     if(len(inventories)>0):
         data = {"message":"Success",'inventories':inventories}
     else:

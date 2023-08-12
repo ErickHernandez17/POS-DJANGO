@@ -35,10 +35,10 @@ class ProductsListView(ListView):
 
     def get_queryset(self):
         query = self.request.GET.get('q')
-        queryset = Products.objects.all()
         if query:
-            queryset = Products.objects.filter(product__icontains=query)
-        return queryset
+            return Products.objects.filter(state=True, product__icontains=query)
+        else:
+            return  Products.objects.filter(state=True).all()
     
 
 class ProductUpdateView(UpdateView):

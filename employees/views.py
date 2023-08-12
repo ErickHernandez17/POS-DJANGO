@@ -1,9 +1,16 @@
+from typing import Any
+from django.db.models.query import QuerySet
 from django.shortcuts import redirect
 from django.urls import reverse
-from django.views.generic import CreateView
+from django.http import JsonResponse
+from django.views.generic import CreateView, ListView, UpdateView
 from django.urls import reverse_lazy
 from django.contrib import messages
 from .forms import EmployeeFormCreation, UserFormCreation
+from .models import Employee
+from django.views.decorators.http import require_POST
+from django.shortcuts import get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 class UserCreateView(CreateView):
     template_name = 'employees/user_create_form.html'  # Reemplaza 'tu_template_de_creacion_de_usuario.html' por la ruta a tu template
@@ -45,3 +52,51 @@ class EmployeeCreateView(CreateView):
         if address_id:
             initial['address'] = address_id
         return initial
+    
+class EmployeesListView(ListView):
+    model = Employee
+    template_name = 'employees/list_employee.html'
+    context_object_name = 'employees'
+    
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            return Employee.objects.filter(state=True, usernme__icontains=query)
+        else:
+            return  Employee.objects.filter(state=True).all()
+        
+        
+def get_employees(_request):
+    employees = list(Employee.objects.values().all())
+    if(len(employees)>-1):
+        data = {'message':'Success', 'employees':employees}
+    else:
+        data = {'data':'Not Found'}
+    return JsonResponse(data)
+
+
+@require_POST
+def update_employee_ajax(request, pk):
+    product = get_object_or_404(Employee, pk=pk)
+    form = EmployeeFormCreation(request.POST, instance=product)
+    employees = list(Employee.objects.values().filter(state=True))
+    if form.is_valid():
+        form.save()
+        data = {"message":"Success",'employees':employees}
+        return JsonResponse(data)
+    else:
+        return JsonResponse({'message': 'error'})
+
+
+@csrf_exempt
+def delete_employee(request, product_id):
+    try:
+        employee = Employee.objects.get(pk=product_id)
+        employee.delete()
+        data = {"message": "success"}
+    except Employee.DoesNotExist:
+        data = {"message": "error"}
+    
+    return JsonResponse(data)
+
+    
