@@ -9,8 +9,6 @@ const list_elements = async() => {
                 opciones+=`<tr>
                     <td>${inventory.product__product}</td>
                     <td>${inventory.quantity}</td>
-                    <td>${inventory.product__price}</td>
-                    <td>${ inventory.create_date}</td>
                     <td>
                         <a class="btn btn-primary btn-sm open-popup" data-update-url="/inventory/update/${inventory.id}">Editar</a>
                     </td>

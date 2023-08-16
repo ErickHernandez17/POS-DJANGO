@@ -1,0 +1,36 @@
+{% extends 'core/update.html' %}
+
+{% block content %}
+
+<form method="post" action="{% if type == 'PAISES' %} {% url 'update-country-ajax' item.id %} {% else %} {% url 'update-city-ajax' item.id%} {% endif %}" id="update-form">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <div class="d-grid gap-2">
+    <button class="btn btn-primary btn-outline-success col-sm-12" type="submit">Actualizar</button>
+  </div>
+</form>
+
+<script>
+  $(document).ready(function() {
+    $("#update-form").submit(function(event) {
+      event.preventDefault();
+      var form = $(this);
+      var ajaxUrl = form.attr("action");
+
+      $.ajax({
+        url: ajaxUrl,
+        type: form.attr("method"),
+        data: form.serialize(),
+        success: function(data) {
+          if (data.message === 'Success') {
+            // Enviar un mensaje a la ventana principal antes de cerrar la ventana emergente
+            window.opener.postMessage({ action: 'popupClosed', message: 'Success' }, '*');
+            
+            window.close();
+          }
+        }
+      });
+    });
+  });
+</script>
+{% endblock content %}

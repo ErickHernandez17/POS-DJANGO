@@ -32,13 +32,13 @@ class ProductsListView(ListView):
     template_name = 'products/products_list_view.html'  # Cambia esto al nombre de tu plantilla
     context_object_name = 'products'  # Nombre con el que se accederá a los objetos en la plantilla
     ordering = ['product']  # Ordenamiento de los objetos
-
+    using = 'slave'
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query:
-            return Products.objects.filter(state=True, product__icontains=query)
+            return Products.objects.using('slave').filter(state=True, product__icontains=query)
         else:
-            return  Products.objects.filter(state=True).all()
+            return  Products.objects.using('slave').filter(state=True).all()
     
 
 class ProductUpdateView(UpdateView):
@@ -50,7 +50,7 @@ class ProductUpdateView(UpdateView):
     def form_valid(self, form):
         response = super().form_valid(form)
         if self.request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
-            products = list(Products.objects.values().filter(state=True))
+            products = list(Products.objects.using('slave').values().filter(state=True))
             if len(products) > -1:
                 data = {"message": "success", 'categories': products}
             else:
@@ -61,7 +61,7 @@ class ProductUpdateView(UpdateView):
 
 
 def get_products(_request):
-    products = list(Products.objects.values().filter(state=True))
+    products = list(Products.objects.using('slave').values().filter(state=True))
     if(len(products)>-1):
         data = {'message':'Success', 'products':products}
     else:
@@ -73,7 +73,7 @@ def get_products(_request):
 def update_category_ajax(request, pk):
     product = get_object_or_404(Products, pk=pk)
     form = ProductsCreateForm(request.POST, instance=product)
-    products = list(Products.objects.values().filter(state=True))
+    products = list(Products.objects.using('slave').values().filter(state=True))
     if form.is_valid():
         form.save()
         data = {"message":"Success",'categories':products}
@@ -85,7 +85,7 @@ def update_category_ajax(request, pk):
 @csrf_exempt
 def delete_product(request, product_id):
     try:
-        category = Products.objects.get(pk=product_id)
+        category = Products.objects.using('slave').get(pk=product_id)
         category.state = False
         category.save()
         data = {"message": "success"}
@@ -97,7 +97,7 @@ def delete_product(request, product_id):
 
 def get_price(request, id_product):
     try:
-        product = Products.objects.get(pk=id_product)
+        product = Products.objects.using('slave').get(pk=id_product)
         price = product.price
         print(price)
         return JsonResponse({'price':price})

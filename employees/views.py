@@ -57,17 +57,17 @@ class EmployeesListView(ListView):
     model = Employee
     template_name = 'employees/list_employee.html'
     context_object_name = 'employees'
-    
+    using = 'slave'
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query:
-            return Employee.objects.filter(state=True, usernme__icontains=query)
+            return Employee.objects.using('slave').filter(state=True, usernme__icontains=query)
         else:
-            return  Employee.objects.filter(state=True).all()
+            return  Employee.objects.using('slave').filter(state=True).all()
         
         
 def get_employees(_request):
-    employees = list(Employee.objects.values().all())
+    employees = list(Employee.objects.using('slave').values().all())
     if(len(employees)>-1):
         data = {'message':'Success', 'employees':employees}
     else:
@@ -79,7 +79,7 @@ def get_employees(_request):
 def update_employee_ajax(request, pk):
     product = get_object_or_404(Employee, pk=pk)
     form = EmployeeFormCreation(request.POST, instance=product)
-    employees = list(Employee.objects.values().filter(state=True))
+    employees = list(Employee.objects.using('slave').values().filter(state=True))
     if form.is_valid():
         form.save()
         data = {"message":"Success",'employees':employees}
@@ -91,7 +91,7 @@ def update_employee_ajax(request, pk):
 @csrf_exempt
 def delete_employee(request, product_id):
     try:
-        employee = Employee.objects.get(pk=product_id)
+        employee = Employee.objects.using('slave').get(pk=product_id)
         employee.delete()
         data = {"message": "success"}
     except Employee.DoesNotExist:

@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-z(lnc*zt2s+9^a5bs$zbm(6!m%fsc+pzncy++02j)j^j9@j9ss
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.113.23','127.0.0.1']
+ALLOWED_HOSTS = ['192.168.113.23','127.0.0.1','192.168.1.12']
 
 
 # Application definition
@@ -89,6 +89,25 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+""" DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',  # Motor de base de datos (puedes usar otro si lo prefieres)
+        'NAME': 'my_db',  # Nombre de la base de datos maestra
+        'USER': 'root',
+        'PASSWORD': 'S3cret',
+        'HOST': '0.0.0.0',
+        'PORT': '3306',
+    },
+    'slave': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'my_db',  # Nombre de la base de datos esclava
+        'USER': 'root',
+        'PASSWORD': 'S3cret',
+        'HOST': '0.0.0.0',  # Dirección de la base de datos esclava
+        'PORT': '3306',
+    },
+} """
 
 
 # Password validation

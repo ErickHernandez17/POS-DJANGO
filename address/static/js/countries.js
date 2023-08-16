@@ -1,27 +1,23 @@
-var contenedor = document.getElementById('tbody');
+var contenedor = document.getElementById('contenedor');
 const list_elements = async() => {
     try{
-        const response = await fetch("./inventories");
+        const response = await fetch("/address/countries/get/");
         const data = await response.json();
+        
         if (data.message == "Success"){
             var opciones = ``;
-            data.inventories.forEach((inventory)=>{
-                opciones+=`<tr>
-                    <td>${inventory.product__product}</td>
-                    <td>${inventory.quantity}</td>
-                    <td>${inventory.product__price}</td>
-                    <td>${inventory.create_date}</td>
-                    <td>
-                        <a class="btn btn-primary btn-sm open-popup" data-update-url="/inventory/update/${inventory.id}">Editar</a>
-                    </td>
-                    <td>
-                        <a class="btn btn-danger btn-sm delete-inventory" data-inventory-id="${inventory.id}" >Eliminar</a>
-                    </td>
-                </tr>`;
+            data.items.forEach((item)=>{
+                opciones+=`<li class="list-group-item d-flex justify-content-between align-items-center generic-item">${item.country}
+                <div>
+                    <a class="btn btn-primary btn-sm open-popup" data-update-url="/address/countries/update/${item.id}" %}">Editar</a>
+                    <a class="btn btn-danger btn-sm delete-category" data-category-id="${item.id}">Eliminar</a>
+                </div>
+                </li>
+               `
             });
             contenedor.innerHTML = opciones;
         }else{
-            alert("Error al obtener las categorias")
+            alert("Error al obtener los paises")
         }
 
     }catch(error){
@@ -44,7 +40,8 @@ $(document).ready(function() {
     $(document).on("click", ".open-popup", function(event) {
       event.preventDefault();
       var url = $(this).data("update-url");
-      var popup = window.open(url, "Editar Producto", "width=800,height=600");
+      var popup = window.open(url, "Editar Categoria", "width=800,height=600");
+        console.log('ventana abierta');
       popup.updateUrl = $(this).data("update-url");
     });
   
@@ -52,30 +49,33 @@ $(document).ready(function() {
     window.addEventListener('message', function(event) {
       if (event.data.action === 'popupClosed' && event.data.message === 'Success') {
         // Actualizar la lista de categorías
+        console.log('Se cerró la ventana de edición');
         list_elements();
       }
     });
   });
   
-  
-  $(document).ready(function(){
-    $(document).on("click", ".delete-inventory", function(event) {
+
+  $(document).ready(function() {
+    // Delegación de eventos para los botones de "Eliminar"
+    $(document).on("click", ".delete-category", function(event) {
         event.preventDefault();
-        var inventoryId = $(this).data("inventory-id");
+        var countriesId = $(this).data("category-id");
         
         // Mostrar ventana emergente de confirmación
-        var confirmDelete = confirm("¿Estás seguro de que deseas eliminar este inventario?");
+        var confirmDelete = confirm("¿Estás seguro de que deseas eliminar este pais?");
         
         if (confirmDelete) {
             // Realizar la eliminación
-            deleteInventory(inventoryId);
+            deleteCategory(countriesId);
         }
     });
+
 });
 
-  function deleteInventory(inventoryId) {
+function deleteCategory(categoryId) {
     $.ajax({
-        url: `/inventory/delete/${inventoryId}/`,  // Cambia la URL según tu configuración
+        url: `/address/countries/delete/${categoryId}/`,  // Cambia la URL según tu configuración
         type: "POST",
         data: { csrfmiddlewaretoken: "{{ csrf_token }}" },  // Agrega el token CSRF
         success: function(data) {
@@ -83,10 +83,11 @@ $(document).ready(function() {
                 // Actualizar la lista de categorías
                 list_elements();
             } else {
-                alert("Error al eliminar el inventario");
+                alert("Error al eliminar el pais");
             }
         }
     });
 }
 
-
+  
+  

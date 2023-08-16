@@ -20,9 +20,3 @@ class HomePageView(TemplateView):
         return render(request, self.template_name, {'title':"Bienvenido a ZYZZPLEMENTS"})
 
 
-
-
-
-class SamplePageView(TemplateView):
-    template_name = "core/sample.html"
-

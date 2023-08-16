@@ -1,0 +1,51 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}CATEGORIAS{% endblock %}
+{% block styles %}
+    <link href="{% static 'core/css/lists.css' %}" rel="stylesheet">
+{% endblock styles %}
+
+{% block content %}
+<div class="container">
+  <div style="padding-top:50px; text-align:center;">
+    
+  </div>
+</div>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endfor %}
+{% endif %}
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-sm-6 border p-4">
+      <h1 class="text-center"> {% if type == "PAISES" %} Paises {% else %} Ciudades {% endif %}</h1>
+      <form method="GET" action=" {% if type == "PAISES" %} {% url 'list_countries' %} {% else %} {% url 'list_cities' %} {% endif %} ">
+        {% comment %} <div class="input-group">
+          <input type="text" name="q" class="form-control" placeholder="Buscar inventario">
+          <button type="submit" class="btn btn-primary">Buscar</button>
+        </div> {% endcomment %}
+      </form>
+
+      <ul class="list-group mt-3 table-responsive-custom" id="contenedor" data-url="{% url 'list_category' %}">
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+{% if type == 'PAISES' %}
+    <script src="{% static 'js/countries.js' %}"></script>
+{% else %}
+    <script src="{% static 'js/cities.js' %}"></script>
+{% endif %}
+
+
+{% endblock %}
