@@ -1,20 +1,15 @@
 var contenedor = document.getElementById('tbody');
 const list_elements = async() => {
     try{
-        const response = await fetch("./inventories");
+        const response = await fetch("/employee/get/");
         const data = await response.json();
         if (data.message == "Success"){
             var opciones = ``;
-            data.inventories.forEach((inventory)=>{
+            data.employees.forEach((employee)=>{
                 opciones+=`<tr>
-                    <td>${inventory.product__product}</td>
-                    <td>${inventory.quantity}</td>
-                    <td>
-                        <a class="btn btn-primary btn-sm open-popup" data-update-url="/inventory/update/${inventory.id}">Editar</a>
-                    </td>
-                    <td>
-                        <a class="btn btn-danger btn-sm">Eliminar</a>
-                    </td>
+                    <td>${employee.first_name} ${employee.last_name}</td>
+                    <td>${employee.user_id}</td>
+                   
                 </tr>`;
             });
             contenedor.innerHTML = opciones;

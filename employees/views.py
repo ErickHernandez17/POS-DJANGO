@@ -45,8 +45,6 @@ class EmployeeCreateView(CreateView):
         # Obtener el ID del usuario y la dirección de la URL si están disponibles
         user_id = self.request.GET.get('user_id')
         address_id = self.request.GET.get('address_id')
-        print(user_id)
-        print(address_id)
         if user_id:
             initial['user'] = user_id
         if address_id:
@@ -61,9 +59,9 @@ class EmployeesListView(ListView):
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query:
-            return Employee.objects.using('slave').filter(state=True, usernme__icontains=query)
+            return Employee.objects.using('slave').values()
         else:
-            return  Employee.objects.using('slave').filter(state=True).all()
+            return  Employee.objects.using('slave').values()
         
         
 def get_employees(_request):

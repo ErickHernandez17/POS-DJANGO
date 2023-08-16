@@ -96,7 +96,7 @@ DATABASES = {
         'NAME': 'my_db',  # Nombre de la base de datos maestra
         'USER': 'root',
         'PASSWORD': 'S3cret',
-        'HOST': '192.168.1.12',
+        'HOST': '127.0.0.1',
         'PORT': '3307',
     },
     'slave': {
@@ -104,7 +104,7 @@ DATABASES = {
         'NAME': 'my_db',  # Nombre de la base de datos esclava
         'USER': 'root',
         'PASSWORD': 'S3cret',
-        'HOST': '192.168.1.12',  # Dirección de la base de datos esclava
+        'HOST': '127.0.0.1',  # Dirección de la base de datos esclava
         'PORT': '3308',
     },
 }

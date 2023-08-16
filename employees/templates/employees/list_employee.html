@@ -3,14 +3,14 @@
 {% block title %}EMPLEADOS{% endblock title %}
 
 {% block content %}
-
+{% load static %}
 <main role="main">
     <div class="container mt-5">
         <div class="row justify-content-center">
           <div class="col-sm-10 border p-4">
             <h1 class='text-center'>Inventario</h1>
           <!-- Barra de búsqueda -->
-          <form action="{% url 'list_inventory' %}" method="get" class="mb-4">
+          <form action="{% url 'list_employees' %}" method="get" class="mb-4">
             <div class="input-group">
               <input type="text" name="q" class="form-control" placeholder="Buscar inventario">
               <button type="submit" class="btn btn-primary">Buscar</button>
@@ -24,8 +24,7 @@
                 <tr>
                   <th>Empleado</th>
                   <th>Usuario</th>
-                  <th></th> 
-                  <th></th>   <!-- Columna para botones de Acciones -->
+                  
                 </tr>
               </thead>
               <tbody id="tbody">
@@ -38,6 +37,6 @@
       </div>
     </div>
   </main>
-<script src="{% static 'js/loader.js' %}"></script>
+<script src="{% static 'js/employee_list.js' %}"></script>
 
 {% endblock content %}
