@@ -83,31 +83,31 @@ WSGI_APPLICATION = 'POS.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
+""" DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
-}
+} """
 
-""" DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',  # Motor de base de datos (puedes usar otro si lo prefieres)
         'NAME': 'my_db',  # Nombre de la base de datos maestra
         'USER': 'root',
         'PASSWORD': 'S3cret',
-        'HOST': '0.0.0.0',
-        'PORT': '3306',
+        'HOST': '192.168.1.12',
+        'PORT': '3307',
     },
     'slave': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'my_db',  # Nombre de la base de datos esclava
         'USER': 'root',
         'PASSWORD': 'S3cret',
-        'HOST': '0.0.0.0',  # Dirección de la base de datos esclava
-        'PORT': '3306',
+        'HOST': '192.168.1.12',  # Dirección de la base de datos esclava
+        'PORT': '3308',
     },
-} """
+}
 
 
 # Password validation

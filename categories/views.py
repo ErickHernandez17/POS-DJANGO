@@ -27,15 +27,16 @@ class CategoriesListView(DetailView):
     template_name = 'categories/category_list_view.html'
     context_object_name = 'categories'
     ordering = ['category']
+    using = 'slave'
 
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query:
-            return Categories.objects.filter(category__icontains=query)
-        return Categories.objects.all()
+            return Categories.objects.using('slave').filter(category__icontains=query)
+        return Categories.objects.using('slave').all()
     
     def get_object(self, queryset=None):
-        return Categories.objects.all()
+        return Categories.objects.using('slave').all()
 
 
 class CategoryUpdateView(UpdateView):
@@ -60,7 +61,7 @@ class CategoryUpdateView(UpdateView):
     
     
 def get_categories(_request):
-    categories = list(Categories.objects.values().filter(state=True))
+    categories = list(Categories.objects.using('slave').values().filter(state=True))
     
     if(len(categories)>0):
         data = {"message":"Success",'categories':categories}
