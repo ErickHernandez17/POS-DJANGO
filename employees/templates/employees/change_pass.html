@@ -1,0 +1,25 @@
+{% extends 'core/update.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <form action="{% url 'change_pass' user.id %}" method="post">
+            {% csrf_token %}
+            {{ form.new_password.label_tag }}
+            {{ form.new_password }}
+            {{ form.new_password.errors }}
+
+            {{ form.confirm_password.label_tag }}
+            {{ form.confirm_password }}
+            {{ form.confirm_password.errors }}
+            <div class="row">
+                <input type="submit" value="CAMBIAR CONTRASEÑA">
+            </div>
+        
+        </form>
+    </div>
+</div>
+
+{% endblock content %}
+

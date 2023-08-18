@@ -54,6 +54,11 @@ class EmployeeFormCreation(forms.ModelForm):
             'rfc':'',
             'curp':'',
         }
-    
+        
+        
+class ChangePass(forms.ModelForm):
+    new_password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control'}))
+    confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control'}))
+
     
     

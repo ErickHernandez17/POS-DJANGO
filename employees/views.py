@@ -1,16 +1,16 @@
-from typing import Any
-from django.db.models.query import QuerySet
-from django.shortcuts import redirect
+
+from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.http import JsonResponse
 from django.views.generic import CreateView, ListView, UpdateView
 from django.urls import reverse_lazy
 from django.contrib import messages
-from .forms import EmployeeFormCreation, UserFormCreation
+from .forms import EmployeeFormCreation, UserFormCreation, ChangePass
 from .models import Employee
 from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import User
 # Create your views here.
 class UserCreateView(CreateView):
     template_name = 'employees/user_create_form.html'  # Reemplaza 'tu_template_de_creacion_de_usuario.html' por la ruta a tu template
@@ -98,3 +98,37 @@ def delete_employee(request, product_id):
     return JsonResponse(data)
 
     
+def change_password(request, user_id):
+    user = User.objects.get(pk=user_id)
+    if request.method == 'POST':
+        new_pass = request.POST['new_password']
+        conf_pass = request.POST['confirm_password']
+        
+        if new_pass == conf_pass:
+            user.set_password(new_pass)
+            user.save()
+            return redirect('list_employees')
+        
+    else:
+        form = ChangePass()
+        return render(request, 'change_pass.html', {'form':form})
+    
+    
+class EmployeeUpdate(UpdateView):
+    model = Employee
+    form = EmployeeFormCreation
+    template_name = 'employees/change_employee.html'
+    context_object_name = 'employee'
+    success_url = reverse_lazy('list_employees')
+    
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        if self.request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+            employee = list(Employee.objects.values())
+            if len(employee) > 0:
+                data = {"message": "success", 'employees': employee}
+            else:
+                data = {'message': 'Not Found'}
+            return JsonResponse(data)
+        
+        return response

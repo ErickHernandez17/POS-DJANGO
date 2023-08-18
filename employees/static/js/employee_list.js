@@ -9,7 +9,8 @@ const list_elements = async() => {
                 opciones+=`<tr>
                     <td>${employee.first_name} ${employee.last_name}</td>
                     <td>${employee.user_id}</td>
-                   
+                    <a class="btn btn-primary btn-sm" data-update-url="/employee/change-pass/${employee.user_id}" %}">Cambiar contraseña</a>
+                    <a class="btn btn-danger btn-sm" data-update-url="/employee/employee/update/${employee.id}"">Cabiar informacion personal</a>
                 </tr>`;
             });
             contenedor.innerHTML = opciones;
@@ -32,7 +33,7 @@ window.addEventListener("load", async() =>{
     await cargaInicial();
 });
 
-$(document).ready(function() {
+/* $(document).ready(function() {
     // Delegación de eventos para los botones de "Editar"
     $(document).on("click", ".open-popup", function(event) {
       event.preventDefault();
@@ -48,7 +49,7 @@ $(document).ready(function() {
         list_elements();
       }
     });
-  });
+  }); */
   
   
   
