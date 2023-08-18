@@ -7,6 +7,6 @@ urlpatterns = [
     path('user/create/', UserCreateView.as_view(), name="create_user"),
     path('', EmployeesListView.as_view(), name='list_employees'),
     path('get/', get_employees, name="get-employees"),
-    path('change-pass/<int:pk>', change_password, name='change_pass'),
+    path('change-pass/<int:user_id>/', change_password, name='change_pass'),
     path('employee/update/<int:pk>/', EmployeeUpdate.as_view(), name='update_employee'),
 ]

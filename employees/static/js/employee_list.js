@@ -1,55 +1,20 @@
-var contenedor = document.getElementById('tbody');
-const list_elements = async() => {
-    try{
-        const response = await fetch("/employee/get/");
-        const data = await response.json();
-        if (data.message == "Success"){
-            var opciones = ``;
-            data.employees.forEach((employee)=>{
-                opciones+=`<tr>
-                    <td>${employee.first_name} ${employee.last_name}</td>
-                    <td>${employee.user_id}</td>
-                    <a class="btn btn-primary btn-sm" data-update-url="/employee/change-pass/${employee.user_id}" %}">Cambiar contraseña</a>
-                    <a class="btn btn-danger btn-sm" data-update-url="/employee/employee/update/${employee.id}"">Cabiar informacion personal</a>
-                </tr>`;
-            });
-            contenedor.innerHTML = opciones;
-        }else{
-            alert("Error al obtener las categorias")
-        }
+document.addEventListener('DOMContentLoaded', () => {
+    const changePassButtons = document.querySelectorAll('.change-pass-btn');
+    const updateInfoButtons = document.querySelectorAll('.update-info-btn');
 
-    }catch(error){
-        console.log(error);
-    }
-}
+    changePassButtons.forEach(button => {
+        const userId = button.getAttribute('data-user-id');
+        button.addEventListener('click', () => {
+            const url = `/employee/change-pass/${userId}/`;
+            window.location.href = url;
+        });
+    });
 
-
-const cargaInicial = async() => {
-    await list_elements();
-}
-
-
-window.addEventListener("load", async() =>{
-    await cargaInicial();
+    updateInfoButtons.forEach(button => {
+        const employeeId = button.getAttribute('data-employee-id');
+        button.addEventListener('click', () => {
+            const url = `/employee/employee/update/${employeeId}/`;
+            window.location.href = url;
+        });
+    });
 });
-
-/* $(document).ready(function() {
-    // Delegación de eventos para los botones de "Editar"
-    $(document).on("click", ".open-popup", function(event) {
-      event.preventDefault();
-      var url = $(this).data("update-url");
-      var popup = window.open(url, "Editar Producto", "width=800,height=600");
-      popup.updateUrl = $(this).data("update-url");
-    });
-  
-    // Escuchar el evento de mensaje desde la ventana emergente
-    window.addEventListener('message', function(event) {
-      if (event.data.action === 'popupClosed' && event.data.message === 'Success') {
-        // Actualizar la lista de categorías
-        list_elements();
-      }
-    });
-  }); */
-  
-  
-  

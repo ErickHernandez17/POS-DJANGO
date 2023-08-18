@@ -29,7 +29,20 @@
                 </tr>
               </thead>
               <tbody id="tbody">
-                
+                {% for employee in employees %}
+                  <tr>
+                      <td>${{ employee.first_name }} {{ employee.last_name }}</td>
+                      <td>${{ employee.user_id }}</td>
+                      <td>
+                          <a class="btn btn-primary btn-sm change-pass-btn" data-user-id="{{ employee.user_id }}">Cambiar contraseña</a>
+                      </td>
+                      <td>
+                          <a class="btn btn-danger btn-sm" href="/employee/employee/update/{{ employee.id }}/">
+                              Cambiar información personal
+                          </a>
+                      </td>
+                  </tr>
+                  {% endfor %}
               </tbody>
             </table>
           </div>
